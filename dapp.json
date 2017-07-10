@@ -1,0 +1,17 @@
+{
+  "name": "cctime",
+  "link": "https://github.com/sqfasd/cctime/archive/master.zip",
+  "category": 1,
+  "description": "Decentralized news channel",
+  "tags": "asch,dapp,demo,cctime",
+  "icon": "http://o7dyh3w0x.bkt.clouddn.com/hello.png",
+  "type": 0,
+  "delegates": [
+    "8b1c24a0b9ba9b9ccf5e35d0c848d582a2a22cca54d42de8ac7b2412e7dc63d4",
+    "aa7dcc3afd151a549e826753b0547c90e61b022adb26938177904a73fc4fee36",
+    "e29c75979ac834b871ce58dc52a6f604f8f565dea2b8925705883b8c001fe8ce",
+    "55ad778a8ff0ce4c25cb7a45735c9e55cf1daca110cfddee30e789cb07c8c9f3",
+    "982076258caab20f06feddc94b95ace89a2862f36fea73fa007916ab97e5946a"
+  ],
+  "unlockDelegates": 3
+}
