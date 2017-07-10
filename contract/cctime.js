@@ -6,7 +6,7 @@ const COMMENT_REWARD_UNIT = 100000
 const COMMENT_REWARD_CURRENCY = 'XAS'
 
 module.exports = {
-  postArticle: async (url, text, tags) => {
+  postArticle: async function(title, url, text, tags) {
     if (!url && !text) {
       return 'Should provide url or text'
     }
@@ -15,6 +15,9 @@ module.exports = {
     }
     if (!tags) {
       return 'Should provide tags'
+    }
+    if (!title) {
+      return 'Should provide title'
     }
     if (url && url.length > 256) {
       return 'Url too long'
@@ -31,6 +34,7 @@ module.exports = {
     }
 
     app.sdb.create('Article', {
+      title: title,
       url: url || '',
       text: text || '',
       tags: tags,
@@ -42,7 +46,7 @@ module.exports = {
     })
   },
 
-  postComment: async (aid, pid, content) => {
+  postComment: async function(aid, pid, content) {
     if (!aid) {
       return 'Invalid article id'
     }
@@ -66,7 +70,7 @@ module.exports = {
     })
   },
 
-  voteArticle: async (aid, amount) => {
+  voteArticle: async function(aid, amount) {
     if (!aid || !amount) return 'Invalid params'
     app.validate('amount', amount)
 
@@ -87,11 +91,11 @@ module.exports = {
     app.balances.increase(article.authorId, VOTE_CURRENCY, authorReward)
     app.feePool.add(VOTE_CURRENCY, extraFee)
 
-    let increment = Number(bAmount.div(VOTE_UNIT).floor().toSting())
+    let increment = Number(bAmount.div(VOTE_UNIT).floor().toString())
     app.sdb.increment('Article', { votes: increment }, { id: aid })
   },
 
-  likeComment: async (cid, amount) => {
+  likeComment: async function(cid, amount) {
     if (!cid || !amount) return 'Invalid params'
     app.valudate('amount', amount)
 

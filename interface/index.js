@@ -20,27 +20,43 @@ async function getArticlesByScore(options) {
     limit: 300,
     sort: { timestamp: -1 }
   })
-  let popularArticles = await app.mode.Article.findAll({
+  let popularArticles = await app.model.Article.findAll({
     limit: 300,
     sort: { votes: -1 }
   })
-  let allArticles = latestArticles.concat(popularArticles)
+  let allArticles = []
+  let uniqueIds = new Set
+  latestArticles.forEach((a) => {
+    if (!uniqueIds.has(a.id)) {
+      uniqueIds.add(a.id)
+      allArticles.push(a)
+    }
+  })
+  popularArticles.forEach((a) => {
+    if (!uniqueIds.has(a.id)) {
+      uniqueIds.add(a.id)
+      popularArticles.push(a)
+    }
+  })
   allArticles.forEach((a) => {
     a.score = calcScore(a)
   })
   allArticles.sort((l, r) => {
     return r.score - l.score
   })
-  return { articles: articles.slice(0, options.limit) }
+  return { articles: allArticles.slice(0, options.limit) }
 }
 
 app.route.get('/articles',  async (req) => {
   let query = req.query
+  if (!query.sortBy) {
+    query.sortBy = 'score'
+  }
   let articles = []
   if (query.sortBy === 'timestamp') {
-    return getArticlesByTime(query)
+    return await getArticlesByTime(query)
   } else if (query.sortBy === 'score') {
-    return getArticlesByScore(query)
+    return await getArticlesByScore(query)
   } else {
     throw new Error('Sort field not supported')
   }
@@ -56,7 +72,7 @@ app.route.get('/articles/:id',  async (req) => {
 
 app.route.get('/articles/:id/comments', async (req) => {
   let id = req.params.id
-  let comments = await app.model.Comments.findAll({
+  let comments = await app.model.Comment.findAll({
     condition: { aid: id }
   })
   return { comments: comments }

@@ -3,7 +3,8 @@ module.exports = {
   fields: [
     {
       name: 'id',
-      type: 'Number',
+      type: 'String',
+      length: '20',
       not_null: true,
       primary_key: true
     },
