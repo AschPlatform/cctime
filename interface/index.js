@@ -1,4 +1,4 @@
-let bignum = require('bignum')
+let bignum = require('bignumber')
 
 async function getArticlesByTime(options) {
   let count = await app.model.Article.count()
