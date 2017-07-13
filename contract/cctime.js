@@ -16,8 +16,14 @@ module.exports = {
     if (!tags) {
       return 'Should provide tags'
     }
+    if (tags.length > 20) {
+      return 'Invalid tags size'
+    }
     if (!title) {
       return 'Should provide title'
+    }
+    if (title.length > 256) {
+      return 'Invalid title size'
     }
     if (url && url.length > 256) {
       return 'Url too long'
@@ -52,6 +58,9 @@ module.exports = {
     }
     if (!content) {
       return 'Invalid content'
+    }
+    if (content.length > 4096) {
+      return 'Invalid content size'
     }
     if (pid) {
       let exists = app.model.Comment.exists({ id: pid })
