@@ -44,7 +44,7 @@ async function getArticlesByScore(options) {
   allArticles.sort((l, r) => {
     return r.score - l.score
   })
-  return { articles: allArticles.slice(0, options.limit) }
+  return { articles: allArticles.slice(0, options.limit || 50) }
 }
 
 app.route.get('/articles',  async (req) => {
@@ -72,8 +72,11 @@ app.route.get('/articles/:id',  async (req) => {
 
 app.route.get('/articles/:id/comments', async (req) => {
   let id = req.params.id
+  let count = await app.model.Comment.count()
   let comments = await app.model.Comment.findAll({
-    condition: { aid: id }
+    condition: { aid: id },
+    limit: req.query.limit || 50,
+    offset: req.query.offset || 0
   })
-  return { comments: comments }
+  return { comments: comments, count: count }
 })
