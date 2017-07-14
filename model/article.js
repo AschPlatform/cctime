@@ -52,6 +52,12 @@ module.exports = {
       name: 'votes',
       type: 'Number',
       not_null: true
+    },
+    {
+      name: 'comments',
+      type: 'Number',
+      not_null: true,
+      default: 0
     }
   ]
 }

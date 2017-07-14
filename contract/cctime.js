@@ -48,7 +48,8 @@ module.exports = {
       votes: 0,
       tid: this.trs.id,
       authorId: this.trs.senderId,
-      timestamp: this.trs.timestamp
+      timestamp: this.trs.timestamp,
+      comments: 0
     })
   },
 
@@ -77,6 +78,7 @@ module.exports = {
       tid: this.trs.id,
       authorId: this.trs.senderId
     })
+    app.sdb.increment('Article', { comments: 1 }, { id: aid })
   },
 
   voteArticle: async function(aid, amount) {
