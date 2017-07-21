@@ -7,21 +7,17 @@
     {
       "fee": "0",
       "timestamp": 0,
-      "senderPublicKey": "4ff4b8a05503c9189d0c20e56714c38cf07efce3eccb63e22ef2afa0066ef2d4",
+      "senderPublicKey": "27823f51a3dddd475943fb8142380d2f8722b0f6c651f6ac37930b63666c7803",
       "type": 3,
-      "args": [
-        "CNY",
-        "100000000000000",
-        "A8QCwz5Vs77UGX9YqBg9kJ6AZmsXQBC8vj"
-      ],
-      "signature": "4304867b5dd59cdc2020807754ee93147ba77a3b9fe3ffe6bade14953f75b1c17d607a8c031c2c99301eccb2838ad51d7b87498f4bc9b1f3d473c7217f268f0e",
-      "id": "3f0314d3301c4470dd54e856d6628760ec39eb14c1eb8d36020279df88a6385f"
+      "args": "[\"CNY\",\"100000000000000\",\"A8QCwz5Vs77UGX9YqBg9kJ6AZmsXQBC8vj\"]",
+      "signature": "22739bb762ff0135a0c4199507e3c45a8615c467bfeb4efa5110802033959698588e39b76d037445e02959ee67b483ac4d24f12304181f4955871cdcd28e3001",
+      "id": "b12b144b3dbb76b70cd62f97e3d3b0606d97c0f402bba1fb973dd2d3ab604a16"
     }
   ],
   "timestamp": 0,
-  "payloadLength": 93,
-  "payloadHash": "0cfee92c58c330fc1bf89c716bef5da4ed9f5a48b8956c6a3b451ee778bd77f3",
+  "payloadLength": 103,
+  "payloadHash": "995f4749e1924af55f1cdefd202efd0b37b2aa70553982378c037bc6015d5634",
   "count": 1,
-  "signature": "8a1dc59ef0b63e6ad614fbb00cafa8be1d063c030290084933e33549b286c040d6fc9f7e02bfa029e1def1462fad7bfc0973be0d9a6627c923fa607baf3e6109",
-  "id": "1381a4c89c68c106b38d26b98a77d6809b8e7c773ddbdfd55ec8c8c1869e2512"
+  "signature": "b1d0171494ce6c0621902c6005f7a85e15f3509a68ac6106b166abf711ced73efaeaf1eae0cdf594143854e27b417b253485cf98b3cc9f7aa967a929b717020b",
+  "id": "451dd17f273ea5fbd240238178c1343b11031a1d309ee8b29e8b1a5838473ec6"
 }

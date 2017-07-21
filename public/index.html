@@ -119,7 +119,7 @@
                 secret: UserInfo.secret,
                 fee: fee,
                 type: Number($('#contractOptions').val()),
-                args: args
+                args: JSON.stringify(args)
             }
             console.log('invoke', data)
             $.ajax({
