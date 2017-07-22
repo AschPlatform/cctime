@@ -121,7 +121,8 @@ module.exports = {
     })
     if (!comment) return 'Comment not found'
 
-    app.balances.transfer(this.trs.senderId, comment.authorId, COMMENT_REWARD_CURRENCY, amount)
+    //app.balances.transfer(this.trs.senderId, comment.authorId, COMMENT_REWARD_CURRENCY, amount)
+    app.balances.transfer(COMMENT_REWARD_CURRENCY, amount, this.trs.senderId, comment.authorId)
 
     let increment = Number(bAmount.div(COMMENT_REWARD_UNIT).floor().toString())
     app.sdb.update('Comment', { rewards: increment }, { id: cid })
