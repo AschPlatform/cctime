@@ -108,7 +108,7 @@ module.exports = {
 
   likeComment: async function(cid, amount) {
     if (!cid || !amount) return 'Invalid params'
-    app.valudate('amount', amount)
+    app.validate('amount', amount)
 
     let balance = app.balances.get(this.trs.senderId, COMMENT_REWARD_CURRENCY)
     if (balance.lt(amount)) return 'Insufficient balance'
