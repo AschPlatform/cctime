@@ -38,6 +38,7 @@
                 success: function (ret) {
                     console.log(ret)
                     var $contractOptions = $('#contractOptions')
+                    $contractOptions.empty()
                     for (var i in ret.contracts) {
                         var c = ret.contracts[i]
                         $contractOptions.append('<option value="' + c.type + '">' + c.type + ': ' + c.name + '</option>')
