@@ -6,7 +6,7 @@ const COMMENT_REWARD_UNIT = 100000
 const COMMENT_REWARD_CURRENCY = 'XAS'
 
 module.exports = {
-  postArticle: async function(title, url, text, tags) {
+  postArticle: async function (title, url, text, tags) {
     if (!url && !text) {
       return 'Should provide url or text'
     }
@@ -33,10 +33,12 @@ module.exports = {
     }
     //TODO validate url format
 
-    app.sdb.lock('postArticle@' + url)
-    let exists = await app.model.Article.exists({ url: url })
-    if (exists) {
-      return 'Url already exists'
+    if (url) {
+      app.sdb.lock('postArticle@' + url)
+      let exists = await app.model.Article.exists({ url: url })
+      if (exists) {
+        return 'Url already exists'
+      }
     }
 
     app.sdb.create('Article', {
@@ -53,7 +55,7 @@ module.exports = {
     })
   },
 
-  postComment: async function(aid, pid, content) {
+  postComment: async function (aid, pid, content) {
     if (!aid) {
       return 'Invalid article id'
     }
@@ -81,7 +83,7 @@ module.exports = {
     app.sdb.increment('Article', { comments: 1 }, { id: aid })
   },
 
-  voteArticle: async function(aid, amount) {
+  voteArticle: async function (aid, amount) {
     if (!aid || !amount) return 'Invalid params'
     app.validate('amount', amount)
 
@@ -106,7 +108,7 @@ module.exports = {
     app.sdb.increment('Article', { votes: increment }, { id: aid })
   },
 
-  likeComment: async function(cid, amount) {
+  likeComment: async function (cid, amount) {
     if (!cid || !amount) return 'Invalid params'
     app.validate('amount', amount)
 
