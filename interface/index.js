@@ -11,8 +11,8 @@ async function getArticlesByTime(options) {
 }
 
 function calcScore(article) {
-    let elapsedHours = (Date.now() - app.getRealTime(article.timestamp)) / 3600000
-    return article.votes / Math.pow(elapsedHours + 2, 1.8)
+  let elapsedHours = (Date.now() - app.getRealTime(article.timestamp)) / 3600000
+  return article.votes / Math.pow(elapsedHours + 2, 1.8)
 }
 
 async function getArticlesByScore(options) {
@@ -47,36 +47,78 @@ async function getArticlesByScore(options) {
   return { articles: allArticles.slice(0, options.limit || 50) }
 }
 
-app.route.get('/articles',  async (req) => {
+app.route.get('/articles', async (req) => {
   let query = req.query
   if (!query.sortBy) {
     query.sortBy = 'score'
   }
-  let articles = []
+  let res = null
   if (query.sortBy === 'timestamp') {
-    return await getArticlesByTime(query)
+    res = await getArticlesByTime(query)
   } else if (query.sortBy === 'score') {
-    return await getArticlesByScore(query)
+    res = await getArticlesByScore(query)
   } else {
     throw new Error('Sort field not supported')
   }
+  let addresses = res.articles.map((a) => a.authorId)
+  let accounts = await app.model.Account.findAll({
+    condition: {
+      address: { $in: addresses }
+    },
+    fields: ['str1', 'address']
+  })
+  let accountMap = new Map
+  for (let account of accounts) {
+    accountMap.set(account.address, account)
+  }
+  for (let article of res.articles) {
+    let account = accountMap.get(article.authorId)
+    if (account) {
+      article.nickname = account.str1
+    }
+  }
+  return res
 })
 
-app.route.get('/articles/:id',  async (req) => {
+app.route.get('/articles/:id', async (req) => {
   let id = req.params.id
   let article = await app.model.Article.findOne({
     condition: { id: id }
   })
+  if (!article) throw new Error('Article not found')
+  let account = await app.model.Account.findOne({
+    condition: { address: article.authorId }
+  })
+  if (account) {
+    article.nickname = account.str1
+  }
   return { article: article }
 })
 
 app.route.get('/articles/:id/comments', async (req) => {
   let id = req.params.id
-  let count = await app.model.Comment.count()
+  let count = await app.model.Comment.count({ aid: id })
   let comments = await app.model.Comment.findAll({
     condition: { aid: id },
     limit: req.query.limit || 50,
     offset: req.query.offset || 0
   })
+  let addresses = comments.map((c) => c.authorId)
+  let accounts = await app.model.Account.findAll({
+    condition: {
+      address: { $in: addresses }
+    },
+    fields: ['str1', 'address']
+  })
+  let accountMap = new Map
+  for (let account of accounts) {
+    accountMap.set(account.address, account)
+  }
+  for (let c of comments) {
+    let account = accountMap.get(c.authorId)
+    if (account) {
+      c.nickname = account.str1
+    }
+  }
   return { comments: comments, count: count }
 })
