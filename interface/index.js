@@ -3,6 +3,9 @@ let bignum = require('bignumber')
 async function getArticlesByTime(options) {
   let count = await app.model.Article.count()
   let articles = await app.model.Article.findAll({
+    condition: {
+      reports: { $lt: 3 }
+    },
     limit: options.limit || 50,
     offset: options.offset || 0,
     sort: { timestamp: -1 }
@@ -17,6 +20,9 @@ function calcScore(article) {
 
 async function getArticlesByScore(options) {
   let latestArticles = await app.model.Article.findAll({
+    condition: {
+      reports: { $lt: 3 }
+    },
     limit: 300,
     sort: { timestamp: -1 }
   })
@@ -86,6 +92,7 @@ app.route.get('/articles/:id', async (req) => {
     condition: { id: id }
   })
   if (!article) throw new Error('Article not found')
+  if (article.reports >= 3) throw new Error('Article not allowed')
   let account = await app.model.Account.findOne({
     condition: { address: article.authorId }
   })
@@ -99,7 +106,10 @@ app.route.get('/articles/:id/comments', async (req) => {
   let id = req.params.id
   let count = await app.model.Comment.count({ aid: id })
   let comments = await app.model.Comment.findAll({
-    condition: { aid: id },
+    condition: [
+      { aid: id },
+      { reports: { $lt: 3 } }
+    ],
     limit: req.query.limit || 50,
     offset: req.query.offset || 0
   })

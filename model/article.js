@@ -58,6 +58,12 @@ module.exports = {
       type: 'Number',
       not_null: true,
       default: 0
+    },
+    {
+      name: 'reports',
+      type: 'Number',
+      not_null: true,
+      default: 0
     }
   ]
 }

@@ -41,6 +41,12 @@ module.exports = {
       name: 'rewards',
       type: 'Number',
       not_null: true
+    },
+    {
+      name: 'reports',
+      type: 'Number',
+      not_null: true,
+      default: 0
     }
   ]
 }

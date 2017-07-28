@@ -129,4 +129,30 @@ module.exports = {
     let increment = Number(bAmount.div(COMMENT_REWARD_UNIT).floor().toString())
     app.sdb.update('Comment', { rewards: increment }, { id: cid })
   },
+
+  report: async function (topic, value) {
+    if (!topic || !value) return 'Invalid params'
+
+    topic = Number(topic)
+    if ([1, 2].indexOf(topic) === -1) return 'Invalid topic'
+
+    if (app.meta.delegates.indexOf(this.trs.senderPublicKey) === -1) return 'Permission denied'
+
+    let reporter = this.trs.senderId
+    app.sdb.lock('cctime.report@' + reporter)
+    let exists = await app.model.Report.exists({
+      reporter: reporter,
+      topic: topic,
+      value: value
+    })
+    if (exists) return 'Already reported'
+
+    let model = topic === 1 ? 'Article' : 'Comment'
+    app.sdb.increment(model, { reports: 1 }, { id: value })
+    app.sdb.create('Report', {
+      reporter: reporter,
+      topic: topic,
+      value: value
+    })
+  }
 }
