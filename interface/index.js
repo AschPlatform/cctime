@@ -104,14 +104,28 @@ app.route.get('/articles/:id', async (req) => {
 
 app.route.get('/articles/:id/comments', async (req) => {
   let id = req.params.id
+  let sort = {
+    timestamp: 1
+  }
+  if (req.query && req.query.sortBy) {
+    let sortInfo = req.query.sortBy.split(':')
+    if (sortInfo.length !== 2 ||
+        ['timestamp'].indexOf(sortInfo[0]) === -1 ||
+        ['asc', 'desc'].indexOf(sortInfo[1]) === -1) {
+      throw new Error('Invalid sort params')
+    }
+    sort = {}
+    sort[sortInfo[0]] = sortInfo[1] === 'asc' ? 1 : -1
+  }
   let count = await app.model.Comment.count({ aid: id })
   let comments = await app.model.Comment.findAll({
     condition: [
       { aid: id },
-      { reports: { $lt: 3 } }
+      { reports: { $lt: 3 } },
     ],
     limit: req.query.limit || 50,
-    offset: req.query.offset || 0
+    offset: req.query.offset || 0,
+    sort: sort
   })
   let replyIds = []
   for (let c of comments) {
