@@ -113,7 +113,21 @@ app.route.get('/articles/:id/comments', async (req) => {
     limit: req.query.limit || 50,
     offset: req.query.offset || 0
   })
-  let addresses = comments.map((c) => c.authorId)
+  let replyIds = []
+  for (let c of comments) {
+    if (c.pid) replyIds.push(c.pid)
+  }
+  let replyComments = await app.model.Comment.findAll({
+    condition: {
+      id: {$in: replyIds}
+    },
+    fields: ['authorId', 'id']
+  })
+  let replyAuthorMap = new Map
+  for (let rc of replyComments) {
+    replyAuthorMap.set(rc.id, rc.authorId)
+  }
+  let addresses = comments.map((c) => c.authorId).concat(replyComments.map((rc) => rc.authorId))
   let accounts = await app.model.Account.findAll({
     condition: {
       address: { $in: addresses }
@@ -128,6 +142,12 @@ app.route.get('/articles/:id/comments', async (req) => {
     let account = accountMap.get(c.authorId)
     if (account) {
       c.nickname = account.str1
+    }
+    let replyAuthorId = replyAuthorMap.get(c.pid)
+    if (replyAuthorId) {
+      c.replyAuthorId = replyAuthorId
+      let replyAccount = accountMap.get(replyAuthorId)
+      if (replyAccount) c.replyAuthorName = replyAccount.str1
     }
   }
   return { comments: comments, count: count }
