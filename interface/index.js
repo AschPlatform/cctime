@@ -15,7 +15,7 @@ async function getArticlesByTime(options) {
 
 function calcScore(article) {
   let elapsedHours = (Date.now() - app.getRealTime(article.timestamp)) / 3600000
-  return article.votes / Math.pow(elapsedHours + 2, 1.8)
+  return Math.sqrt(article.votes + 1) / Math.pow(elapsedHours + 2, 1.8)
 }
 
 async function getArticlesByScore(options) {
