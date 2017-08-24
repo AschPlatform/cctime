@@ -1,7 +1,7 @@
 let bignum = require('bignumber')
 
 async function getArticlesByTime(options) {
-  let count = await app.model.Article.count()
+  let count = await app.model.Article.count({ reports: { $lt: 3 } })
   let articles = await app.model.Article.findAll({
     condition: {
       reports: { $lt: 3 }
@@ -110,14 +110,14 @@ app.route.get('/articles/:id/comments', async (req) => {
   if (req.query && req.query.sortBy) {
     let sortInfo = req.query.sortBy.split(':')
     if (sortInfo.length !== 2 ||
-        ['timestamp'].indexOf(sortInfo[0]) === -1 ||
-        ['asc', 'desc'].indexOf(sortInfo[1]) === -1) {
+      ['timestamp'].indexOf(sortInfo[0]) === -1 ||
+      ['asc', 'desc'].indexOf(sortInfo[1]) === -1) {
       throw new Error('Invalid sort params')
     }
     sort = {}
     sort[sortInfo[0]] = sortInfo[1] === 'asc' ? 1 : -1
   }
-  let count = await app.model.Comment.count({ aid: id })
+  let count = await app.model.Comment.count({ aid: id, reports: { $lt: 3 } })
   let comments = await app.model.Comment.findAll({
     condition: [
       { aid: id },
@@ -133,7 +133,7 @@ app.route.get('/articles/:id/comments', async (req) => {
   }
   let replyComments = await app.model.Comment.findAll({
     condition: {
-      id: {$in: replyIds}
+      id: { $in: replyIds }
     },
     fields: ['authorId', 'id']
   })
