@@ -1,9 +1,9 @@
 let bignum = require('bignumber')
 
-const VOTE_UNIT = 100000
-const VOTE_CURRENCY = 'XAS'
-const COMMENT_REWARD_UNIT = 100000
-const COMMENT_REWARD_CURRENCY = 'XAS'
+const VOTE_UNIT = 100000000
+const VOTE_CURRENCY = 'CCTime.XCT'
+const COMMENT_REWARD_UNIT = 100000000
+const COMMENT_REWARD_CURRENCY = 'CCTime.XCT'
 
 module.exports = {
   postArticle: async function (title, url, text, tags) {

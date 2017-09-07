@@ -58,6 +58,10 @@ app.route.get('/articles', async (req) => {
   if (!query.sortBy) {
     query.sortBy = 'score'
   }
+  let key = ['articles', query.sortBy, query.limit, query.offset].join('_')
+  if (app.custom.cache.has(key)) {
+    return app.custom.cache.get(key)
+  }
   let res = null
   if (query.sortBy === 'timestamp') {
     res = await getArticlesByTime(query)
@@ -83,11 +87,16 @@ app.route.get('/articles', async (req) => {
       article.nickname = account.str1
     }
   }
+  app.custom.cache.set(key, res)
   return res
 })
 
 app.route.get('/articles/:id', async (req) => {
   let id = req.params.id
+  let key = 'article_' + id
+  if (app.custom.cache.has(key)) {
+    return app.custom.cache.get(key)
+  }
   let article = await app.model.Article.findOne({
     condition: { id: id }
   })
@@ -99,7 +108,9 @@ app.route.get('/articles/:id', async (req) => {
   if (account) {
     article.nickname = account.str1
   }
-  return { article: article }
+  let result = { article: article }
+  app.custom.cache.set(key, result)
+  return result
 })
 
 app.route.get('/articles/:id/comments', async (req) => {
@@ -116,6 +127,10 @@ app.route.get('/articles/:id/comments', async (req) => {
     }
     sort = {}
     sort[sortInfo[0]] = sortInfo[1] === 'asc' ? 1 : -1
+  }
+  let key = ['comments', id, req.query.sortBy, req.query.limit, req.query.offset].join('_')
+  if (app.custom.cache.has(key)) {
+    return app.custom.cache.get(key)
   }
   let count = await app.model.Comment.count({ aid: id, reports: { $lt: 3 } })
   let comments = await app.model.Comment.findAll({
@@ -164,5 +179,7 @@ app.route.get('/articles/:id/comments', async (req) => {
       if (replyAccount) c.replyAuthorName = replyAccount.str1
     }
   }
-  return { comments: comments, count: count }
+  let result = { comments: comments, count: count }
+  app.custom.cache.set(key, result)
+  return result
 })
