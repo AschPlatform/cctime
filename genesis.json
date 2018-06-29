@@ -1,23 +1,13 @@
 {
-  "delegate": "8065a105c785a08757727fded3a06f8f312e73ad40f1f3502e0232ea42e67efd",
+  "delegate": "a7cfd49d25ce247568d39b17fca221d9b2ff8402a9f6eb6346d2291a5c81374c",
   "height": 1,
   "pointId": null,
   "pointHeight": null,
-  "transactions": [
-    {
-      "fee": "0",
-      "timestamp": 0,
-      "senderPublicKey": "27823f51a3dddd475943fb8142380d2f8722b0f6c651f6ac37930b63666c7803",
-      "type": 3,
-      "args": "[\"CNY\",\"100000000000000\",\"A8QCwz5Vs77UGX9YqBg9kJ6AZmsXQBC8vj\"]",
-      "signature": "22739bb762ff0135a0c4199507e3c45a8615c467bfeb4efa5110802033959698588e39b76d037445e02959ee67b483ac4d24f12304181f4955871cdcd28e3001",
-      "id": "b12b144b3dbb76b70cd62f97e3d3b0606d97c0f402bba1fb973dd2d3ab604a16"
-    }
-  ],
+  "transactions": [],
   "timestamp": 0,
-  "payloadLength": 103,
-  "payloadHash": "995f4749e1924af55f1cdefd202efd0b37b2aa70553982378c037bc6015d5634",
-  "count": 1,
-  "signature": "b1d0171494ce6c0621902c6005f7a85e15f3509a68ac6106b166abf711ced73efaeaf1eae0cdf594143854e27b417b253485cf98b3cc9f7aa967a929b717020b",
-  "id": "451dd17f273ea5fbd240238178c1343b11031a1d309ee8b29e8b1a5838473ec6"
+  "payloadLength": 0,
+  "payloadHash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+  "count": 0,
+  "signature": "287818ef81b51375cc1cc36b62e3f3b8027d8334633828fee0801d9033a0da60a9ca182ac4435c663aabae141563c06c6cd55d494bce1d2dae92e9da8ace0205",
+  "id": "cee2f87f98d0344646ae726af4df3bb1bddcceecc64053f36d16d1281aa90215"
 }
