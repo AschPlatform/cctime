@@ -5,13 +5,13 @@
   "description": "Decentralized news channel",
   "tags": "asch,dapp,demo,cctime",
   "icon": "http://o7dyh3w0x.bkt.clouddn.com/hello.png",
-  "type": 0,
   "delegates": [
-    "8b1c24a0b9ba9b9ccf5e35d0c848d582a2a22cca54d42de8ac7b2412e7dc63d4",
-    "aa7dcc3afd151a549e826753b0547c90e61b022adb26938177904a73fc4fee36",
-    "e29c75979ac834b871ce58dc52a6f604f8f565dea2b8925705883b8c001fe8ce",
-    "55ad778a8ff0ce4c25cb7a45735c9e55cf1daca110cfddee30e789cb07c8c9f3",
-    "982076258caab20f06feddc94b95ace89a2862f36fea73fa007916ab97e5946a"
+    "db18d5799944030f76b6ce0879b1ca4b0c2c1cee51f53ce9b43f78259950c2fd",
+    "590e28d2964b0aa4d7c7b98faee4676d467606c6761f7f41f99c52bb4813b5e4",
+    "bfe511158d674c3a1e21111223a49770bee93611d998e88a5d2ea3145de2b68b",
+    "7bbf62931cf3c596591a580212631aff51d6bc0577c54769953caadb23f6ab00",
+    "452df9213aedb3b9fed6db3e2ea9f49d3db226e2dac01828bc3dcd73b7a953b4"
   ],
-  "unlockDelegates": 3
+  "unlockDelegates": 3,
+  "type": 0
 }
