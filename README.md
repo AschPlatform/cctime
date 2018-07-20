@@ -1,66 +1,74 @@
 
-# CCTime
+# CCTime (Backend)
 
-CCTime is a decentralized application (Dapp) based on the Asch sidechain Dapp SDK. A Dapp that communicate with the Asch main chain. The CCTime application will not issue tokens internally. The tokens will be created on the main chain. We will register a publisher called CCTime on the Asch main chain, and then use this publisher to register an asset named XCT. The full name of this asset is `CCTime.XCT` currency.  
+CCTime is a decentralized application (Dapp) based on the Asch sidechain Dapp SDK. A Dapp that communicate with the Asch mainchain. The CCTime application will not issue tokens internally. The tokens will be created on the main chain. We will register a publisher called CCTime on the Asch main chain, and then use this publisher to register an asset named XCT. The full name of this asset is `CCTime.XCT` currency.  
 
 XCT (time coin) issues a limit of 10 billion tokens. The team has set aside 5% tokens, 10% to partners, and the remaining 85% will all be airdropped to restore the nature of ICO (Initial Crypto-Token Offering).  
 
-<!-- TOC -->
+# Important  
 
-- [CCTime](#cctime)
-  - [1 Installation](#1-installation)
-    - [1.1 Overview](#11-overview)
-    - [1.2 Preparation](#12-preparation)
-      - [1.2.1 Clone cctime](#121-clone-cctime)
-      - [1.2.2 Start localnet](#122-start-localnet)
-      - [1.2.3 Send money to your account](#123-send-money-to-your-account)
-    - [1.3 Create `CCTime.XCT` Asset](#13-create-cctimexct-asset)
-      - [1.3.1 Create Publisher](#131-create-publisher)
-      - [1.3.2 Register Asset](#132-register-asset)
-      - [1.3.3 Create Tokens](#133-create-tokens)
-    - [1.4 Register Dapp](#14-register-dapp)
-      - [1.4.1 Stop the asch node](#141-stop-the-asch-node)
-      - [1.4.2 Register with asch-redeploy](#142-register-with-asch-redeploy)
-    - [1.5 After Dapp Registration (optional)](#15-after-dapp-registration-optional)
-      - [1.5.1 Send `CCTime.XCT` tokens to Dapp](#151-send-cctimexct-tokens-to-dapp)
+__This repository__ is the backend part of the CCTime Dapp. Please follow __this__ installation tutorial first and then start the [cctime-frontend](https://github.com/aschplatform/cctime-frontend/) part.
 
-<!-- /TOC -->
+__CCTIME__
+- Dapp Backend: __this repository__
+- Dapp Frontend: [cctime-frontend](https://github.com/aschplatform/cctime-frontend/)
 
+
+<br/>
 
 ## 1 Installation
 
-### 1.1 Overview
+### 1.1 Preparation
 
-This Dapp uses the `CCTime.XCT` asset in its smart contract. We need to first issue this `CCTime.XCT` asset on the mainchain before we can use it on our Dapp (sidechain).
+Please follow the following steps carefully, to register your cctime Dapp on your localnet.
 
-Please follow the following steps carefully, to register your cctime app on your localnet.
 
-### 1.2 Preparation
+#### 1.1.1 Clone cctime
 
-#### 1.2.1 Clone cctime
-
-Clone the [cctime](https://github.com/AschPlatform/cctime) repository:  
+Clone __this__ repository:  
 
 ```bash
 git clone https://github.com/AschPlatform/cctime
 ```
 
-#### 1.2.2 Start localnet
+#### 1.1.2 Install Asch Blockchain
 
-Start the local blockchain in the __asch__ folder. How to install the asch local node you can read [here](https://github.com/AschPlatform/asch#installation-for-ubuntu-1404x-or-higher)
+If you haven't installed the Asch Blockchain, the installation instructions are located [here](https://github.com/AschPlatform/asch#installation-for-ubuntu-1404x-or-higher) or [here](https://medium.com/aschplatform/develop-blockchain-apps-with-sidechain-technology-part-1-c5aa91c4602f).  
+
+After the installation of the Asch Blockchain you should have the following file structure:
+![idealFolderStructe](./docs/ideal_folder_structure.png)
+
+
+### 1.2 Register cctime
+
+In order to register your CCTime dapp, first install [asch-redeploy](https://github.com/AschPlatform/asch-redeploy)
 
 ```bash
-cd asch
-
-node app.js
+npm install --global asch-redeploy
 ```
 
-Ideally you have now the following folder structure:
-![idealFolderStructe](setup/blob/ideal_folder_structure.png)
+Change directory:  
+```bash
+cd cctime
+```
+Then execute asch-redeploy in the `cctime` folder:  
+```bash
+asch-redeploy --publisher CCTime --asset XCT
+```
 
-#### 1.2.3 Send money to your account
+After a few seconds the dapp should be successfully registered on the local Asch Blockchain:  
 
-Our main account for this tutorial is `AHMCKebuL2nRYDgszf9J2KjVZzAw95WUyB`  
+__DappId__  
+> The new `<dapp Id>` for our Dapp is __ed409eda243950a4702c0d4551740301c2e2ae7cf5dc512c03b04d9b2b07ee98__  
+> (yours will be different)
+
+![dappRegistered](./docs/dappRegistered.png)
+
+
+### 1.2.1 Dapp Registration behind the scenes
+
+__Registration Account__  
+The following account was used for the registration of the CCTime Dapp. This account is also the default account asch-redeploy is using for the Dapp registration. 
 
 ```json
 {
@@ -70,115 +78,89 @@ Our main account for this tutorial is `AHMCKebuL2nRYDgszf9J2KjVZzAw95WUyB`
 }
 ```
 
-We will send 5000 XAS from the genesis account to our account.  
-Therefore we need a new terminal window, because in the old one is already running our localnet.  
+You can use your own account with the following option: `asch-redeploy --master <secret>`
 
-Install all the dependencies:  
-```js
-cd cctime/setup
+<br/>
+<br/>
 
-npm install
-```
+__Publisher and Asset__
 
+Many steps are executed during the automatic CCTime Dapp registration. Let's have a look:  
 
-Then execute the following file [refuel_account.js](./setup/refuel_account.js)
-```js
-node refuel_account.js
-```
+The publisher `CCTime` was registered:  
 
+![img](./docs/registered_publisher.png)
 
-### 1.3 Create `CCTime.XCT` Asset 
+The asset `CCTime.XCT` was registered and after that 20000 `CCTime.XCT` tokens were minted:  
 
-#### 1.3.1 Create Publisher
+![img](./docs/registered_asset.png)
 
-Our new account will be registered as the publisher `CCTime`
+And 500 `CCTime.XCT` tokens were credited to your Dapp. This operation is called Dapp Refuel.  
 
-Execute the following file in a new console: [create_publisher.js](./setup/create_publisher.js) (the asch node in the other terminal still needs to run)
+![img](./docs/dapp_balance.png)
 
-```js
-node create_publisher.js
-```
+<br/>
 
+__Dapp Refuel__
 
-#### 1.3.2 Register Asset
+A Dapp Refuel is necessary because every Dapp has its account balance. In order to spend `CCTime.XCT` tokens on the CCTime Dapp you need to transfer tokens to your Dapp. You are using the __same account__ with the same secret, wheter your are on the Asch mainchain or on the CCTime Dapp. Every account has its own account balance, on the Asch Mainchain and on the CCTime Dapp. This concept is visualized below:  
 
-After we registered as a publisher we can create our own Asset `CCTime.XCT`.
+Your Asch Mainchain account has a balance of 20000 `CCTime.XCT` tokens. We are going to refuel our CCTime Dapp with 500 `CCTime.XCT`.  
+![img](./docs/simple_sidechain_with_balance.png)
 
-Execute the following file: [create_asset.js](./setup/create_asset.js)
+<br/>
 
-```js
-node create_asset.js
-```
+After we refueled our Dapp with 500 XAS we can spend the `CCTime.XCT` tokens for Dapp services. That wasn't possible before.  
 
-#### 1.3.3 Create Tokens
-
-After we registered our first asset `CCTime.XCT` we need to create new tokens.
-
-Execute the following file: [create_money](./setup/create_money.js)  
-
-```js
-node create_money.js
-```
-
-In the below picture we can see that we created a asset `CCTime.XCT` and created 1000 Tokens.
-![newTokens](./setup/blob/newTokens.png)
+![img](./docs/simple_sidechain_with_balance_after.png)
 
 
-### 1.4 Register Dapp
+<br/>  
 
-#### 1.4.1 Stop the asch node
-
-The asch-redeploy tool starts and stops the asch node automatically. Please switch to your terminal window where the asch node is running and terminate it (normally with Ctrl + C key shortcut).
-
-![terminate_asch](./setup/blob/terminate_asch.png)
-
-#### 1.4.2 Register with asch-redeploy
-
-In order to register your CCTime dapp, first install [asch-redeploy](https://github.com/AschPlatform/asch-redeploy)
-
+Check token balance on Mainchain account:  
 ```bash
-npm install --global asch-redeploy
+curl http://localhost:4096/api/uia/balances/AHMCKebuL2nRYDgszf9J2KjVZzAw95WUyB
+
+# returns
+{
+  "success": true,
+  "balances": [
+    {
+      "currency": "CCTime.XCT",
+      "balance":"1950000000000",
+      "maximum":"1000000000000000000",
+      "precision":8,
+      "quantity":"2000000000000",
+      "writeoff":0,
+      "allowWriteoff":0,
+      "allowWhitelist":0,
+      "allowBlacklist":0,
+      "maximumShow":"10000000000",
+      "quantityShow":"20000",
+      "balanceShow":"19500" // 19500 CCTime.XCT
+    }
+  ],
+  "count":1
+}
 ```
 
-Then execute in the `cctime` folder:
+Check token balance on Sidechain account:  
 ```bash
-cd cctime
+curl http://localhost:4096/api/dapps/<your Dapp Id>/balances/AHMCKebuL2nRYDgszf9J2KjVZzAw95WUyB
 
-asch-redeploy
+# returns
+{
+  "balances": [
+    {
+      "currency": "CCTime.XCT",
+      "balance":"50000000000" // 500 CCTime.XCT
+    }
+  ],
+  "success":true
+}
 ```
 
-Eventually you have to point the asch-redeploy package to the `asch` folder:
-
-```bash
-ASCH_NODE_DIR="/home/user/asch" asch-redeploy
-```
-
-After a few seconds the dapp should be successfully registered on the localnet:  
-
-![dappRegistered](./setup/blob/dappRegistered.png)
-
-### 1.5 After Dapp Registration (optional)
-
-#### 1.5.1 Send `CCTime.XCT` tokens to Dapp
-
-Login into `localhost:4096` with the following secret (our account):  
-```
-sentence weasel match weather apple onion release keen lens deal fruit matrix
-```
-
-
-Under Applications / Installed we can see our new registered Dapp. We have now 1000 `CCTime.XCT` tokens on our __mainchain__ account. We could send some to our Dapp. 
-
-__INFO:__  
-> Tokens must be explicitly send to the Dapp in order for the Dapp to use it. Currently there are just 1000 `CCTime.XCT` tokens on our __mainchain__ account and not on the sidechain (Dapp).  
-> Even if the __mainchain__ and the __sidechain__ account use the same secret. Assets like `CCTime.XCT` are either located on the __mainchain__ account or on the __sidechain__ (Dapp) account.
-
-![refuelDapp](./setup/blob/frontend_dapp_refuel.png)
-
-![500CCTime.XCT](./setup/blob/deposit_500_CCTime_XCT.png)
-
-</br>
-</br>
+</br>  
 </br>  
 
 __License__
