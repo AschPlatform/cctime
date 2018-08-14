@@ -110,7 +110,7 @@ Your Asch Mainchain account has a balance of 20000 `CCTime.XCT` tokens. We are g
 
 <br/>
 
-After we refueled our Dapp with 500 XAS we can spend the `CCTime.XCT` tokens for Dapp services. That wasn't possible before.  
+After we refueled our Dapp with 500 `CCTime.XCT` tokens we can spend them for Dapp services. That wasn't possible before.  
 
 ![img](./docs/simple_sidechain_with_balance_after.png)
 
